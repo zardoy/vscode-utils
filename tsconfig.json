@@ -1,0 +1,8 @@
+{
+    "extends": "@zardoy/tsconfig",
+    "compilerOptions": {
+        "noEmit": false,
+        "outDir": "build"
+    },
+    "include": ["src"]
+}
