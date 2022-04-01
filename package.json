@@ -3,6 +3,7 @@
     "version": "0.0.0-dev",
     "author": "Vitaly Turovsky <vital2580@icloud.com>",
     "license": "MIT",
+    "type": "module",
     "scripts": {
         "lint": "eslint src/**",
         "prepublishOnly": "tsc"
