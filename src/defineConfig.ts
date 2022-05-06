@@ -56,6 +56,7 @@ export const defineConfig = (config: UserConfig): UserConfig => {
     }
 
     if (isInsiders) defaultConfig.development!.executable = 'code-insiders'
+    if (process.env.VSC_FRAMEWORK_EXEC) defaultConfig.development!.executable = process.env.VSC_FRAMEWORK_EXEC as any
     const merged: UserConfig = mergeDeepRight(defaultConfig, config)
     if (forceExecutable) merged.development!.executable = forceExecutable as any
     return merged
