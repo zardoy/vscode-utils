@@ -5,3 +5,5 @@ export const getActiveRegularEditor = () => {
     if (editor === undefined || editor.viewColumn === undefined) return
     return editor
 }
+
+export { ManifestType } from 'vscode-manifest'
