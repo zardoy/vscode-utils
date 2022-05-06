@@ -6,20 +6,31 @@
     "type": "module",
     "scripts": {
         "lint": "eslint src/**",
-        "prepublishOnly": "tsc"
+        "prepublishOnly": "tsc && tsc -p tsconfig.cjs.json && node postbuild.mjs"
     },
     "devDependencies": {
+        "@types/node": "^17.0.31",
         "@types/vscode": "^1.65.0",
         "@zardoy/tsconfig": "^1.4.0",
         "eslint": "^8.11.0",
         "eslint-config-zardoy": "^0.2.10",
-        "typescript": "^4.6.2"
+        "typescript": "^4.6.2",
+        "vscode-framework": "^0.0.18"
     },
     "peerDependencies": {
-        "@types/vscode": "^1.65.0"
+        "@types/vscode": "^1.65.0",
+        "vscode-framework": "^0.0.18"
+    },
+    "peerDependenciesMeta": {
+        "vscode-framework": {
+            "optional": true
+        }
     },
     "dependencies": {
         "@zardoy/utils": "^0.0.4",
-        "rambda": "^7.0.3"
+        "chokidar": "^3.5.3",
+        "rambda": "^7.0.3",
+        "untildify": "^4.0.0",
+        "vscode-manifest": "^0.0.8"
     }
 }
