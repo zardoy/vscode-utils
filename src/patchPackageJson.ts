@@ -2,6 +2,7 @@ import fs from 'fs'
 import { watch } from 'chokidar'
 import { ManifestType, ContributesConfigurationType } from 'vscode-manifest'
 import { Settings } from 'vscode-framework'
+import { oneOf } from '@zardoy/utils'
 
 type MaybePromise<T> = T | Promise<T>
 
@@ -21,6 +22,8 @@ export const patchPackageJson = ({
     patchSettings,
 }: Config) => {
     const outPackageJson = 'out/package.json'
+    const command = process.argv[2]
+    if (!oneOf(command, 'start', 'build', 'generate-manifest')) return
     const watcher = watch([outPackageJson]).on('change', async () => {
         let manifest = JSON.parse(fs.readFileSync(outPackageJson, 'utf-8'))
         const { properties } = manifest.contributes.configuration as ContributesConfigurationType
@@ -61,6 +64,6 @@ export const patchPackageJson = ({
         const userPatched = await rawPatchManifest?.(manifest)
         if (userPatched) manifest = userPatched
         fs.writeFileSync(outPackageJson, JSON.stringify(manifest, undefined, 4), 'utf-8')
-        if (process.argv[2] !== 'start') await watcher.close()
+        if (command !== 'start') await watcher.close()
     })
 }
