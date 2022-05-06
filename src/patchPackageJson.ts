@@ -61,6 +61,6 @@ export const patchPackageJson = ({
         const userPatched = await rawPatchManifest?.(manifest)
         if (userPatched) manifest = userPatched
         fs.writeFileSync(outPackageJson, JSON.stringify(manifest, undefined, 4), 'utf-8')
-        if (process.argv[2] === 'build') watcher.close()
+        if (process.argv[2] === 'build') await watcher.close()
     })
 }

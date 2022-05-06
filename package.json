@@ -6,7 +6,7 @@
     "type": "module",
     "scripts": {
         "lint": "eslint src/**",
-        "prepublishOnly": "tsc && tsc -p tsconfig.cjs.json && node postbuild.mjs"
+        "prepublishOnly": "tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node postbuild.mjs"
     },
     "devDependencies": {
         "@types/node": "^17.0.31",
