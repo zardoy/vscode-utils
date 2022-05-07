@@ -29,6 +29,7 @@
     "dependencies": {
         "@zardoy/utils": "^0.0.4",
         "chokidar": "^3.5.3",
+        "execa": "^5",
         "rambda": "^7.0.3",
         "untildify": "^4.0.0",
         "vscode-manifest": "^0.0.8"
