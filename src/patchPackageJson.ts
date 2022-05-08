@@ -24,7 +24,7 @@ export const patchPackageJson = ({
     const outPackageJson = 'out/package.json'
     const command = process.argv[2]
     if (!oneOf(command, 'start', 'build', 'generate-manifest')) return
-    const watcher = watch([outPackageJson]).on('change', async () => {
+    const handler = async () => {
         let manifest = JSON.parse(fs.readFileSync(outPackageJson, 'utf-8'))
         const { properties } = manifest.contributes.configuration as ContributesConfigurationType
         for (const [, property] of Object.entries(properties)) {
@@ -65,5 +65,7 @@ export const patchPackageJson = ({
         if (userPatched) manifest = userPatched
         fs.writeFileSync(outPackageJson, JSON.stringify(manifest, undefined, 4), 'utf-8')
         if (command !== 'start') await watcher.close()
-    })
+    }
+
+    const watcher = watch([outPackageJson]).on('change', handler).on('add', handler)
 }
