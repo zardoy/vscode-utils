@@ -32,6 +32,6 @@ export const firstExists = async <T>(
     }>,
 ) => {
     // not using Promise.race alternatives to ensure the order remains the same
-    for (const { uri, name } of paths) if (await fsExists(uri)) return name
+    for (const { uri, name, isFile } of paths) if (await fsExists(uri, isFile)) return name
     return undefined
 }
