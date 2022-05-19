@@ -11,6 +11,7 @@ type Alias = {
 export type WebpackConfigResult = {
     /** doesn't preserve order */
     aliases: Alias[]
+    cacheVersion: number
 }
 
 const cachedWebpackConfigs = new Map<string, [number, WebpackConfigResult]>()
@@ -80,6 +81,29 @@ export const readWebpackAliases = async (
         document.version,
         {
             aliases: aliasOutline.children.map(alias => getAliasData(alias)!).filter(Boolean),
+            cacheVersion: document.version,
         },
     ])[1]
+}
+
+export const getTsconfigWithWebpackAliases = async (
+    webpackUri?: vscode.Uri,
+    ignoreAliasEnding?: string[],
+): Promise<{ compilerOptions?: { baseUrl: './'; paths: Record<string, string[]> } }> => {
+    const webpackAliases = await readWebpackAliases(webpackUri, true, ignoreAliasEnding)
+    const jsFileEndings = ['.js', '.mjs', '.cjs', '.ts', '.mts', '.cts', '.jsx', '.tsx', '.json']
+    if (!webpackAliases) return {}
+    return {
+        compilerOptions: {
+            baseUrl: './',
+            paths: Object.fromEntries(
+                webpackAliases.aliases.map(({ name, path }) => {
+                    const isFile = path.split('/').at(-1)!.includes('.') && jsFileEndings.some(ext => path.endsWith(ext))
+                    // ensure is relative (to baseUrl)
+                    if (!path.startsWith('./')) path = `./${path}`
+                    return [isFile ? name : `${name}/*`, [isFile ? path : `${path}/*`]]
+                }),
+            ),
+        },
+    }
 }
