@@ -67,7 +67,7 @@ export const readWebpackAliases = async (
         let content = document.getText(alias.range.with(alias.selectionRange.end)).slice(1).trim()
         // Fallback for older TS version (eg 4.4)
         if (alias.range.isEqual(alias.selectionRange)) {
-            const parts = /['"]?(.+)['"]?: ?(.+)/.exec(document.getText(alias.range))
+            const parts = /['"]?(.+?)['"]?: ?(.+)/.exec(document.getText(alias.range))
             if (!parts) return
             name = parts[1]!
             content = parts[2]!
