@@ -64,7 +64,15 @@ export const readWebpackAliases = async (
         let name = document.getText(alias.selectionRange)
         if (/["']/.test(name)) name = name.slice(1, -1)
         if (normalizeNames && name.endsWith('/')) name = name.slice(0, -1)
-        const content = document.getText(alias.range.with(alias.selectionRange.end)).slice(1).trim()
+        let content = document.getText(alias.range.with(alias.selectionRange.end)).slice(1).trim()
+        // Fallback for older TS version (eg 4.4)
+        if (alias.range.isEqual(alias.selectionRange)) {
+            const parts = /['"]?(.+)['"]?: ?(.+)/.exec(document.getText(alias.range))
+            if (!parts) return
+            name = parts[1]!
+            content = parts[2]!
+        }
+
         const guessedImport = /(?:path.)?(?:resolve|join)\(__dirname, (.+)\)/.exec(content)?.[1]
         if (!guessedImport) return
         const guessedPath = guessedImport
