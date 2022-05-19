@@ -6,7 +6,8 @@
     "type": "module",
     "scripts": {
         "lint": "eslint src/**",
-        "prepublishOnly": "tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node postbuild.mjs"
+        "prepublishOnly": "tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node postbuild.mjs",
+        "watch-esm": "tsc -p tsconfig.build.json --watch"
     },
     "devDependencies": {
         "@types/node": "^17.0.31",
@@ -32,6 +33,7 @@
         "execa": "^5",
         "rambda": "^7.0.3",
         "untildify": "^4.0.0",
-        "vscode-manifest": "^0.0.8"
+        "vscode-manifest": "^0.0.8",
+        "vscode-uri": "^3.0.3"
     }
 }
