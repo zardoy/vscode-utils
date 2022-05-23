@@ -6,4 +6,7 @@ export const getActiveRegularEditor = () => {
     return editor
 }
 
+export const selectionToRange = (selection: vscode.Selection) => new vscode.Range(selection.start, selection.end)
+export const rangeToSelection = (selection: vscode.Range) => new vscode.Selection(selection.start, selection.end)
+
 export { ManifestType } from 'vscode-manifest'

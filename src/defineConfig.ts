@@ -66,6 +66,7 @@ export const defineConfig = (config: UserConfig): UserConfig => {
     if (process.env.VSC_FRAMEWORK_EXEC) defaultConfig.development!.executable = process.env.VSC_FRAMEWORK_EXEC as any
     const merged: UserConfig = mergeDeepRight(defaultConfig, config)
     if (
+        process.platform !== 'win32' &&
         !merged.development!.disableExtensions &&
         ((globalConfigMerged?.disableExtensions as { length?: number } | undefined)?.length || globalConfigMerged?.enableExtensions?.length)
     ) {
