@@ -20,14 +20,15 @@ export const makeOutlineChainFromPos = (rootItems: vscode.DocumentSymbol[], pos:
     const findMe = (items: vscode.DocumentSymbol[]) => {
         let itemIndex = -1
         for (const [i, item] of items.entries()) {
-            if (item.range.contains(pos)) chain.push(item)
+            if (item.range.contains(pos)) {
+                chain.push(item)
+                itemIndex = i
+            }
 
             if (item.children.length > 0) {
                 const foundItem = findMe(item.children)
                 if (foundItem) return foundItem
             }
-
-            if (item.range.contains(pos)) itemIndex = i
         }
 
         if (itemIndex === -1) return
