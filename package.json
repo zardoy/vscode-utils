@@ -8,7 +8,10 @@
     "bin": {
         "vscode-utils": "bin.js"
     },
-    "files": ["build", "bin.js"],
+    "files": [
+        "build",
+        "bin.js"
+    ],
     "scripts": {
         "lint": "eslint src/**",
         "prepublishOnly": "tsc -p tsconfig.build.json && tsc -p tsconfig.cjs.json && node postbuild.mjs",

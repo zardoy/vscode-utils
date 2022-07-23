@@ -1,15 +1,12 @@
 import fs from 'node:fs'
 
 /** Import local package from repo */
-const importFromRepo = (importPath: string) => {
+const importFromRepo = async (importPath: string) => {
   const resolvedImportPath = `${process.cwd()}/node_modules/${importPath}`
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  return require(resolvedImportPath)
+  return import(resolvedImportPath)
 }
 
 export default async () => {
-  const { runConfigurationGenerator } = await importFromRepo('vscode-framework/build/cli/configurationFromType')
-  
+  const { runConfigurationGenerator } = await importFromRepo('vscode-framework/build/cli/configurationFromType.js')
   if (fs.existsSync('src/configurationType.ts') && !fs.existsSync('src/configurationTypeCache.jsonc')) await runConfigurationGenerator('')
-
 }

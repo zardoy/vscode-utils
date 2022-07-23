@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import prepareFrameworkBuild from './prepareFrameworkBuild';
+import prepareFrameworkBuild from './prepareFrameworkBuild.js';
 
 export const program = new Command();
 
