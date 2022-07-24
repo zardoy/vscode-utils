@@ -24,7 +24,11 @@ export const getStylesRange = async (document: vscode.TextDocument, position: vs
 
             // eg style scoped
             const stylesOutlineItem = outline.find(item => item.name.startsWith('style'))
-            return stylesOutlineItem?.range.contains(position) ? stylesOutlineItem.range : undefined
+            const range = stylesOutlineItem?.range.with({
+                start: stylesOutlineItem.range.start.translate(1),
+                end: stylesOutlineItem.range.end.translate(-1),
+            });
+            return range?.contains(position) ? range : undefined
         }
 
         const outline: vscode.DocumentSymbol[] = await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', document.uri)
