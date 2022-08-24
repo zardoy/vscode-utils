@@ -15,6 +15,13 @@ export const findCurrentOutlineItem = (items: vscode.DocumentSymbol[], pos: vsco
     return items[itemIndex]!
 }
 
+export const findCurrentEditorOutlineItem = async () => {
+    const { activeTextEditor } = vscode.window
+    if (!activeTextEditor) return
+    const outlineItems: vscode.DocumentSymbol[] = await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', activeTextEditor.document.uri);
+    return findCurrentOutlineItem(outlineItems, activeTextEditor.selection.active)
+}
+
 export const makeOutlineChainFromPos = (rootItems: vscode.DocumentSymbol[], pos: vscode.Position): vscode.DocumentSymbol[] => {
     const chain: vscode.DocumentSymbol[] = []
     const findMe = (items: vscode.DocumentSymbol[]) => {
