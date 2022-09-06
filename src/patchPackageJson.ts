@@ -3,6 +3,7 @@ import { watch } from 'chokidar'
 import { ManifestType, ContributesConfigurationType } from 'vscode-manifest'
 import { Settings } from 'vscode-framework'
 import { oneOf } from '@zardoy/utils'
+import throttle from 'lodash.throttle'
 
 type MaybePromise<T> = T | Promise<T>
 
@@ -73,5 +74,13 @@ export const patchPackageJson = ({
         if (command !== 'start') await watcher.close()
     }
 
-    const watcher = watch([outPackageJson]).on('change', handler).on('add', handler)
+    const watcher = watch([outPackageJson])
+        .on(
+            'change',
+            throttle(handler, 200, {
+                leading: true,
+                trailing: false,
+            }),
+        )
+        .on('add', handler)
 }

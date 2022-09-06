@@ -13,6 +13,7 @@ specifiers:
   eslint-config-zardoy: ^0.2.10
   execa: ^5
   fs-extra: ^10.1.0
+  lodash.throttle: ^4.1.1
   rambda: ^7.0.3
   typed-jsonfile: ^0.2.1
   typescript: ^4.6.2
@@ -27,6 +28,7 @@ dependencies:
   commander: 9.4.0
   execa: 5.1.1
   fs-extra: 10.1.0
+  lodash.throttle: 4.1.1
   rambda: 7.0.3
   typed-jsonfile: 0.2.1
   untildify: 4.0.0
@@ -3011,6 +3013,10 @@ packages:
   /lodash.merge/4.6.2:
     resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
     dev: true
+
+  /lodash.throttle/4.1.1:
+    resolution: {integrity: sha512-wIkUCfVKpVsWo3JSZlc+8MB5it+2AN5W8J7YVMST30UrvcQNZ1Okbj+rbVniijTWE6FGYy4XJq/rHkas8qJMLQ==}
+    dev: false
 
   /lodash/4.17.21:
     resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
