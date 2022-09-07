@@ -43,11 +43,12 @@ export const jsonPathEquals = (path: Array<string | number>, toCompare: string[]
     return true
 }
 
-export const jsonValuesToCompletions = (items: string[], range: vscode.Range) =>
+export const jsonValuesToCompletions = (items: string[], range?: vscode.Range, forceSorting = false) =>
     items.map(
-        (item): vscode.CompletionItem => ({
+        (item, index): vscode.CompletionItem => ({
             label: item,
             kind: vscode.CompletionItemKind.Value,
             range,
+            sortText: forceSorting ? index.toString() : undefined,
         }),
     )
