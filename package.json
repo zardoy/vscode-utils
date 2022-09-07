@@ -46,6 +46,11 @@
             "optional": true
         }
     },
+    "pnpm": {
+        "neverBuiltDependencies": [
+            "playwright"
+        ]
+    },
     "dependencies": {
         "@zardoy/utils": "^0.0.4",
         "chokidar": "^3.5.3",
