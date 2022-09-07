@@ -13,6 +13,7 @@ specifiers:
   eslint-config-zardoy: ^0.2.10
   execa: ^5
   fs-extra: ^10.1.0
+  jsonc-parser: ^3.2.0
   lodash.throttle: ^4.1.1
   rambda: ^7.0.3
   typed-jsonfile: ^0.2.1
@@ -43,6 +44,7 @@ devDependencies:
   esbuild: 0.15.7
   eslint: 8.11.0
   eslint-config-zardoy: 0.2.10_ynv3edxl3ah44xwgrna2g2yine
+  jsonc-parser: 3.2.0
   typescript: 4.6.2
   vscode-framework: 0.0.18_sidx4bshlgomlvw5dohjzwrkau
 
@@ -2856,8 +2858,8 @@ packages:
       minimist: 1.2.5
     dev: true
 
-  /jsonc-parser/3.0.0:
-    resolution: {integrity: sha512-fQzRfAbIBnR0IQvftw9FJveWiHp72Fg20giDrHz6TdfB12UH/uue0D3hm57UB5KgAVuniLMCaS8P1IMj9NR7cA==}
+  /jsonc-parser/3.2.0:
+    resolution: {integrity: sha512-gfFQZrcTc8CnKXp6Y4/CBT3fTc0OVuDofpre4aEeEpSBPV5X5v4+Vmx+8snU7RLPrNHPKSgLxGo9YuQzz20o+w==}
 
   /jsonfile/6.1.0:
     resolution: {integrity: sha512-5dgndWOriYSm5cnYaJNhalLNDKOqFwyDB/rr1E9ZsGciGvKPs8R2xYGCacuf3z6K1YKDz182fd+fY3cn3pMqXQ==}
@@ -4160,7 +4162,7 @@ packages:
     resolution: {integrity: sha512-8G2jqDOjg2reeq0Af3LYb1hY9bbmDYdnleAPQ6o74IPBJ5OxTjbG89TNoXGVGhy1+M16oFHmLIFfMEthQo3lYA==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
-      jsonc-parser: 3.0.0
+      jsonc-parser: 3.2.0
       jsonfile: 6.1.0
       type-fest: 2.12.0
 

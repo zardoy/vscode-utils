@@ -26,18 +26,23 @@
         "eslint": "^8.11.0",
         "eslint-config-zardoy": "^0.2.10",
         "typescript": "^4.6.2",
-        "vscode-framework": "^0.0.18"
+        "vscode-framework": "^0.0.18",
+        "jsonc-parser": "^3.2.0"
     },
     "peerDependencies": {
         "@types/vscode": "^1.65.0",
         "esbuild": "*",
-        "vscode-framework": "^0.0.18"
+        "vscode-framework": "^0.0.18",
+        "jsonc-parser": "^3.2.0"
     },
     "peerDependenciesMeta": {
         "vscode-framework": {
             "optional": true
         },
         "esbuild": {
+            "optional": true
+        },
+        "jsonc-parser": {
             "optional": true
         }
     },
