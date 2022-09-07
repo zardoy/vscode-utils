@@ -55,9 +55,9 @@ export const defineConfig = (config: UserConfig): UserConfig => {
         const configMerged = { ...globalConfigParsed, ...(isInsiders ? globalConfigParsed.insiders : globalConfigParsed.vscode) }
         globalConfigMerged = configMerged
         forceExecutable = configMerged.forceExecutable
-        Object.assign(defaultConfig.development, pickObj(configMerged, 'alwaysActivationEvent', 'disableExtensions', 'openDevtools'))
+        Object.assign(defaultConfig.development!, pickObj(configMerged, 'alwaysActivationEvent', 'disableExtensions', 'openDevtools'))
         Object.assign(
-            defaultConfig.development!.extensionBootstrap,
+            defaultConfig.development!.extensionBootstrap!,
             pickObj(configMerged, 'autoReload', 'closeWindowOnExit', 'developmentCommands', 'revealOutputChannel'),
         )
     }
