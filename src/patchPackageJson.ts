@@ -31,22 +31,35 @@ export const patchPackageJson = ({
             const { properties } = (manifest.contributes.configuration as ContributesConfigurationType | undefined) ?? {}
             if (!properties) return
 
-            for (const [, property] of Object.entries(properties)) {
-                if (changeToMarkdownDescription && property.description) {
-                    property.markdownDescription = property.description
-                    delete property.description
-                }
+            const normalizeProps = (object: Record<string, any> | undefined) => {
+                if (!object) return
+                for (const [, property] of Object.entries(object)) {
+                    if (typeof property !== 'object') continue
+                    if (changeToMarkdownDescription && property.description) {
+                        property.markdownDescription = property.description
+                        delete property.description
+                    }
 
-                if (changeToMarkdownDeprecated && property.deprecationMessage) {
-                    property.markdownDeprecationMessage = property.deprecationMessage
-                    delete property.deprecationMessage
-                }
+                    if (changeToMarkdownDeprecated && property.deprecationMessage) {
+                        property.markdownDeprecationMessage = property.deprecationMessage
+                        delete property.deprecationMessage
+                    }
 
-                if (changeToMarkdownEnumDescription && property.enumDescriptions) {
-                    property.markdownEnumDescriptions = property.enumDescriptions
-                    delete property.enumDescriptions
+                    if (changeToMarkdownEnumDescription && property.enumDescriptions) {
+                        property.markdownEnumDescriptions = property.enumDescriptions
+                        delete property.enumDescriptions
+                    }
+
+                    if (Array.isArray(property))
+                        for (const maybeObject of property) {
+                            if (typeof maybeObject !== 'object') continue
+                            normalizeProps(maybeObject)
+                        }
+                    else normalizeProps(property)
                 }
             }
+
+            normalizeProps(properties)
 
             if (patchSettings) {
                 let prefix: string
