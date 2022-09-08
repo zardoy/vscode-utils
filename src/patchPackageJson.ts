@@ -84,3 +84,22 @@ export const patchPackageJson = ({
         )
         .on('add', handler)
 }
+
+export const normalizeObjectProperties = (properties: Record<string, any>) => {
+    for (const [, property] of Object.entries(properties)) {
+        if (property.description) {
+            property.markdownDescription = property.description
+            delete property.description
+        }
+
+        if (property.deprecationMessage) {
+            property.markdownDeprecationMessage = property.deprecationMessage
+            delete property.deprecationMessage
+        }
+
+        if (property.enumDescriptions) {
+            property.markdownEnumDescriptions = property.enumDescriptions
+            delete property.enumDescriptions
+        }
+    }
+}
