@@ -17,7 +17,7 @@ const jestTestRunnerForVSCodeE2E = ({ noExit = false } = {}): ITestRunner => ({
             .then(jestCliCallResult => {
                 for (const testResult of jestCliCallResult.results.testResults) {
                     for (const { ancestorTitles, title, status } of testResult.testResults.filter(assertionResult => assertionResult.status === 'passed')) {
-                        console.info(`  ● ${ancestorTitles} > ${title} (${status})`)
+                        console.info(`  ● ${ancestorTitles.join(',')} > ${title} (${status})`)
                     }
                 }
 
