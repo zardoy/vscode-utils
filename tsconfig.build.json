@@ -1,5 +1,12 @@
 {
     "extends": "./tsconfig.json",
-    "include": ["src"],
-    "exclude": ["**/node_modules", "src/defineConfig.ts", "src/patchPackageJson.ts"]
+    "include": [
+        "src"
+    ],
+    "exclude": [
+        "**/node_modules",
+        "src/defineConfig.ts",
+        "src/patchPackageJson.ts",
+        "src/runJestIntegrationTests.ts"
+    ]
 }

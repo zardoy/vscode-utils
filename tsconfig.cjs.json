@@ -4,5 +4,9 @@
         "module": "CommonJS",
         "esModuleInterop": true
     },
-    "include": ["src/defineConfig.ts", "src/patchPackageJson.ts"]
+    "include": [
+        "src/defineConfig.ts",
+        "src/patchPackageJson.ts",
+        "src/runJestIntegrationTests.ts"
+    ]
 }
