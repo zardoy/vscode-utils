@@ -25,15 +25,15 @@
         "esbuild": "^0.15.7",
         "eslint": "^8.11.0",
         "eslint-config-zardoy": "^0.2.10",
+        "jsonc-parser": "^3.2.0",
         "typescript": "^4.6.2",
-        "vscode-framework": "^0.0.18",
-        "jsonc-parser": "^3.2.0"
+        "vscode-framework": "^0.0.18"
     },
     "peerDependencies": {
         "@types/vscode": "^1.65.0",
         "esbuild": "*",
-        "vscode-framework": "^0.0.18",
-        "jsonc-parser": "^3.2.0"
+        "jsonc-parser": "^3.2.0",
+        "vscode-framework": "^0.0.18"
     },
     "peerDependenciesMeta": {
         "vscode-framework": {
@@ -59,6 +59,7 @@
         "fs-extra": "^10.1.0",
         "lodash.throttle": "^4.1.1",
         "rambda": "^7.0.3",
+        "type-fest": "^2.19.0",
         "typed-jsonfile": "^0.2.1",
         "untildify": "^4.0.0",
         "vscode-manifest": "^0.0.8",
