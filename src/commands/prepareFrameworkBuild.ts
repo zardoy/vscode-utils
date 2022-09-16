@@ -1,8 +1,9 @@
 import fs from 'node:fs'
+import { pathToFileURL } from 'node:url'
 
 /** Import local package from repo */
 const importFromRepo = async (importPath: string) => {
-  const resolvedImportPath = `${process.cwd()}/node_modules/${importPath}`
+  const resolvedImportPath = pathToFileURL(`${process.cwd()}/node_modules/${importPath}`).toString()
   return import(resolvedImportPath)
 }
 
