@@ -1,6 +1,7 @@
 import * as vscode from 'vscode'
 
-export const findCurrentOutlineItem = (items: vscode.DocumentSymbol[], pos: vscode.Position): vscode.DocumentSymbol | undefined => {
+export const findCurrentOutlineItem = (items: vscode.DocumentSymbol[] | undefined, pos: vscode.Position): vscode.DocumentSymbol | undefined => {
+    if (!items) return
     let itemIndex = -1
     for (const [i, item] of items.entries()) {
         if (item.children.length > 0) {
@@ -18,7 +19,7 @@ export const findCurrentOutlineItem = (items: vscode.DocumentSymbol[], pos: vsco
 export const findCurrentEditorOutlineItem = async () => {
     const { activeTextEditor } = vscode.window
     if (!activeTextEditor) return
-    const outlineItems: vscode.DocumentSymbol[] = await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', activeTextEditor.document.uri);
+    const outlineItems: vscode.DocumentSymbol[] | undefined = await vscode.commands.executeCommand('vscode.executeDocumentSymbolProvider', activeTextEditor.document.uri);
     return findCurrentOutlineItem(outlineItems, activeTextEditor.selection.active)
 }
 
