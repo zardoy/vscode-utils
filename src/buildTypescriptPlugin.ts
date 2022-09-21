@@ -52,9 +52,7 @@ export default async (
     await modifyJsonFile(pkgJsonPath, pkgOutput, { ifPropertyIsMissing: 'add' })
 
     const enableWatch = process.argv.includes('--watch')
-    // TODO build twice, when no watch, like vscode-framework does
-    // as in theory dynamic import can impact startup perf
-    await build({
+    return build({
         bundle: true,
         platform: 'node',
         treeShaking: true,
@@ -69,6 +67,11 @@ export default async (
         // fix for jsonc-parser
         mainFields: ['module', 'main'],
         ...buildOptions,
+        define: {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
+            __WEB__: JSON.stringify(!!enableBrowser),
+            ...buildOptions.define,
+        },
     })
 }
 
