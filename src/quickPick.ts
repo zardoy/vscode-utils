@@ -1,7 +1,7 @@
 import * as vscode from 'vscode'
 import { Except } from 'type-fest'
-import { pickObject } from 'vscode-framework/build/util'
 import { VSCodeQuickPickItem } from 'vscode-framework'
+import { pickObj } from '@zardoy/utils'
 
 type QuickPickCallbackOptions = Pick<vscode.QuickPick<any>, 'onDidChangeValue' | 'onDidTriggerButton' | 'onDidTriggerItemButton'>
 
@@ -30,7 +30,7 @@ export const showQuickPick = async <T, M extends boolean = false>(
         if (preselectedItemIndex >= 0) quickPick.activeItems = [quickPick.items[preselectedItemIndex]!]
     }
 
-    Object.assign(quickPick, pickObject(options, ['ignoreFocusOut', 'matchOnDescription', 'matchOnDetail', 'placeHolder', 'title']))
+    Object.assign(quickPick, pickObj(options, 'ignoreFocusOut', 'matchOnDescription', 'matchOnDetail', 'placeHolder', 'title'))
     quickPick.placeholder = options.placeHolder
     quickPick.canSelectMany = options.canPickMany!
     if (options.initialValue) quickPick.value = options.initialValue
