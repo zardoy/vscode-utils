@@ -70,5 +70,14 @@
         "untildify": "^4.0.0",
         "vscode-manifest": "^0.0.8",
         "vscode-uri": "^3.0.3"
+    },
+    "prettier": {
+        "semi": false,
+        "singleQuote": true,
+        "proseWrap": "never",
+        "tabWidth": 4,
+        "trailingComma": "all",
+        "arrowParens": "avoid",
+        "printWidth": 160
     }
 }

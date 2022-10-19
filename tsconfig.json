@@ -3,7 +3,11 @@
     "compilerOptions": {
         "noEmit": false,
         "declaration": true,
-        "outDir": "build"
+        "outDir": "build",
+        "lib": [
+            "ESNext",
+            "WebWorker"
+        ]
     },
     "include": [
         "src",
