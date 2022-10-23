@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import { Settings } from 'vscode-framework'
+import { getExtensionSettingId, Settings } from 'vscode-framework'
 
 // tests: https://github.com/zardoy/github-manager/tree/main/test/normalizeRegex.test.ts
 /** For *regex* type settings that are actually strings allows to specify flags e.g. test or /test/i */
@@ -16,7 +16,7 @@ type SettingKey = keyof Settings
 export const watchExtensionSettings = (keys: SettingKey[], handler: (changedSettingKey: SettingKey) => any, scope?: vscode.ConfigurationScope) => {
     vscode.workspace.onDidChangeConfiguration(({ affectsConfiguration }) => {
         // eslint-disable-next-line @typescript-eslint/no-confusing-void-expression
-        const changedConfigKey = keys.find(key => affectsConfiguration(key, scope))
+        const changedConfigKey = keys.find(key => affectsConfiguration(getExtensionSettingId(key), scope))
         if (changedConfigKey) handler(changedConfigKey)
     })
 }
