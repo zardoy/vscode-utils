@@ -1,3 +1,5 @@
+/* eslint-disable unicorn/consistent-destructuring */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as vscode from 'vscode'
 import { Except } from 'type-fest'
 import { VSCodeQuickPickItem } from 'vscode-framework'
@@ -16,12 +18,13 @@ export const showQuickPick = async <T, M extends boolean = false>(
     options: Except<vscode.QuickPickOptions, 'onDidSelectItem'> &
         QuickPickMethods & {
             canPickMany?: M
+            /** Initially active item (not selected) */
             initialSelectedIndex?: number
             onDidChangeActive?: (this: vscode.QuickPick<VSCodeQuickPickItem<T>>, items: ReadonlyArray<VSCodeQuickPickItem<T>>, index: number) => any
             onDidShow?: (this: vscode.QuickPick<VSCodeQuickPickItem<T>>) => any
             initialValue?: string
             // eslint-disable-next-line @typescript-eslint/ban-types
-        } & (M extends true ? { onDidChangeSelection?: (items: ReadonlyArray<VSCodeQuickPickItem<T>>) => any } : {}) = {},
+        } & (M extends true ? { onDidChangeSelection?: (items: ReadonlyArray<VSCodeQuickPickItem<T>>) => any; initialAllSelected?: boolean } : {}) = {},
 ): Promise<(M extends true ? T[] : T) | undefined> => {
     const quickPick = vscode.window.createQuickPick<VSCodeQuickPickItem<any>>()
     quickPick.items = items
@@ -37,6 +40,11 @@ export const showQuickPick = async <T, M extends boolean = false>(
     const { initialSelectedIndex, onDidChangeActive } = options
     const initialSelectedItem = initialSelectedIndex && items[initialSelectedIndex]
     if (initialSelectedItem) quickPick.activeItems = [initialSelectedItem]
+    // eslint-disable-next-line curly
+    if ('initialAllSelected' in options && options.initialAllSelected) {
+        quickPick.selectedItems = quickPick.items
+    }
+
     if (onDidChangeActive)
         quickPick.onDidChangeActive(newActiveItems => {
             const index = items.indexOf(newActiveItems[0]!)
