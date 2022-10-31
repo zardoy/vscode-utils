@@ -20,6 +20,7 @@ specifiers:
   jsonc-parser: ^3.2.0
   lodash.throttle: ^4.1.1
   modify-json-file: ^1.2.2
+  path-browserify: ^1.0.1
   rambda: ^7.0.3
   type-fest: ^2.19.0
   typed-jsonfile: ^0.2.1
@@ -37,6 +38,7 @@ dependencies:
   fs-extra: 10.1.0
   lodash.throttle: 4.1.1
   modify-json-file: 1.2.2
+  path-browserify: 1.0.1
   rambda: 7.2.1
   type-fest: 2.19.0
   typed-jsonfile: 0.2.1
@@ -4574,7 +4576,6 @@ packages:
 
   /path-browserify/1.0.1:
     resolution: {integrity: sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==}
-    dev: true
 
   /path-case/3.0.4:
     resolution: {integrity: sha512-qO4qCFjXqVTrcbPt/hQfhTQ+VhFsqNKOPtytgNKkKxSoEp3XPUQ8ObFuePylOIok5gjn69ry8XiULxCwot3Wfg==}
