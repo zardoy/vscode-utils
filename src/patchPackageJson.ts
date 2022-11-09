@@ -35,17 +35,17 @@ export const patchPackageJson = ({
                 if (!object) return
                 for (const [, property] of Object.entries(object)) {
                     if (typeof property !== 'object') continue
-                    if (changeToMarkdownDescription && property.description) {
+                    if (changeToMarkdownDescription && typeof property.description === 'string') {
                         property.markdownDescription = property.description
                         delete property.description
                     }
 
-                    if (changeToMarkdownDeprecated && property.deprecationMessage) {
+                    if (changeToMarkdownDeprecated && typeof property.deprecationMessage === 'string') {
                         property.markdownDeprecationMessage = property.deprecationMessage
                         delete property.deprecationMessage
                     }
 
-                    if (changeToMarkdownEnumDescription && property.enumDescriptions) {
+                    if (changeToMarkdownEnumDescription && typeof property.enumDescriptions === 'string') {
                         property.markdownEnumDescriptions = property.enumDescriptions
                         delete property.enumDescriptions
                     }
