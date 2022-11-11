@@ -83,11 +83,14 @@ export const patchPackageJson = ({
 
         const userPatched = await rawPatchManifest?.(manifest)
         if (userPatched) manifest = userPatched
-        fs.writeFileSync(outPackageJson, JSON.stringify(manifest, undefined, 4), 'utf-8')
         if (command !== 'start') await watcher.close()
+        fs.writeFileSync(outPackageJson, JSON.stringify(manifest, undefined, 4), 'utf-8')
     }
 
-    const watcher = watch([outPackageJson])
+    const watcher = watch([outPackageJson], {
+        // vscode-framework has antipattern. It unlinks first instead of overwriting content
+        ignoreInitial: true,
+    })
         .on(
             'change',
             throttle(handler, 200, {
