@@ -1,5 +1,5 @@
 import * as vscode from 'vscode'
-import { getExtensionSettingId, Settings } from 'vscode-framework'
+import { getExtensionSetting, getExtensionSettingId, Settings } from 'vscode-framework'
 
 // tests: https://github.com/zardoy/github-manager/tree/main/test/normalizeRegex.test.ts
 /** For *regex* type settings that are actually strings allows to specify flags e.g. test or /test/i */
@@ -19,4 +19,24 @@ export const watchExtensionSettings = (keys: SettingKey[], handler: (changedSett
         const changedConfigKey = keys.find(key => affectsConfiguration(getExtensionSettingId(key), scope))
         if (changedConfigKey) handler(changedConfigKey)
     })
+}
+
+export const conditionallyRegister = (
+    settingKey: SettingKey,
+    registerFn: () => vscode.Disposable,
+    acceptSettingValue: () => boolean = () => !!getExtensionSetting(settingKey),
+) => {
+    let disposable: vscode.Disposable | undefined
+    const changeRegisterState = () => {
+        const registerState = acceptSettingValue()
+        if (registerState) {
+            if (!disposable) disposable = registerFn()
+        } else {
+            disposable?.dispose()
+            disposable = undefined
+        }
+    }
+
+    changeRegisterState()
+    watchExtensionSettings([settingKey], changeRegisterState)
 }
