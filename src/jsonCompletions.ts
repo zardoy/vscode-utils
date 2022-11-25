@@ -34,12 +34,13 @@ export const jsonPathEquals = (path: Array<string | number>, toCompare: string[]
     }
 
     if (path.length !== toCompare.length) return false
-    for (const [i, val] of toCompare.entries())
+    for (const [i, val] of toCompare.entries()) {
         if (val === '*') {
             if (path[i] === undefined) return false
         } else if (path[i] !== val) {
             return false
         }
+    }
 
     return true
 }

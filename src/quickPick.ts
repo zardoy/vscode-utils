@@ -5,10 +5,15 @@ import { Except } from 'type-fest'
 import { VSCodeQuickPickItem } from 'vscode-framework'
 import { pickObj } from '@zardoy/utils'
 
-type QuickPickCallbackOptions = Pick<vscode.QuickPick<any>, 'onDidChangeValue' | 'onDidTriggerButton' | 'onDidTriggerItemButton'>
+type QuickPickCallbackOptions = Pick<vscode.QuickPick<any>, 'onDidChangeValue' | 'onDidTriggerButton'>
 
 type QuickPickMethods = {
     [K in keyof QuickPickCallbackOptions]?: QuickPickCallbackOptions[K] extends vscode.Event<infer U> ? (this: vscode.QuickPick<any>, event: U) => void : never
+}
+
+export type ThisQuickPick<T> = Omit<vscode.QuickPick<VSCodeQuickPickItem<T>>, 'dispose'> & {
+    /** @deprecated Use `hide()` instead*/
+    dispose: vscode.QuickPick<any>['dispose']
 }
 
 // TODO allow to accept promise
@@ -20,8 +25,10 @@ export const showQuickPick = async <T, M extends boolean = false>(
             canPickMany?: M
             /** Initially active item (not selected) */
             initialSelectedIndex?: number
-            onDidChangeActive?: (this: vscode.QuickPick<VSCodeQuickPickItem<T>>, items: ReadonlyArray<VSCodeQuickPickItem<T>>, index: number) => any
-            onDidShow?: (this: vscode.QuickPick<VSCodeQuickPickItem<T>>) => any
+            onDidChangeActive?: (this: ThisQuickPick<T>, items: ReadonlyArray<VSCodeQuickPickItem<T>>, index: number) => any
+            onDidChangeFirstActive?: (this: ThisQuickPick<T>, item: VSCodeQuickPickItem<T>, index: number) => any
+            onDidTriggerItemButton?: (this: ThisQuickPick<T>, button: vscode.QuickPickItemButtonEvent<VSCodeQuickPickItem<T>>) => any
+            onDidShow?: (this: ThisQuickPick<T>) => any
             initialValue?: string
             // eslint-disable-next-line @typescript-eslint/ban-types
         } & (M extends true ? { onDidChangeSelection?: (items: ReadonlyArray<VSCodeQuickPickItem<T>>) => any; initialAllSelected?: boolean } : {}) = {},
@@ -37,22 +44,31 @@ export const showQuickPick = async <T, M extends boolean = false>(
     quickPick.placeholder = options.placeHolder
     quickPick.canSelectMany = options.canPickMany!
     if (options.initialValue) quickPick.value = options.initialValue
-    const { initialSelectedIndex, onDidChangeActive } = options
+    const { initialSelectedIndex, onDidChangeActive, onDidChangeFirstActive } = options
     const initialSelectedItem = initialSelectedIndex && items[initialSelectedIndex]
     if (initialSelectedItem) quickPick.activeItems = [initialSelectedItem]
-    // eslint-disable-next-line curly
     if ('initialAllSelected' in options && options.initialAllSelected) {
         quickPick.selectedItems = quickPick.items
     }
 
-    if (onDidChangeActive)
+    if (onDidChangeActive) {
         quickPick.onDidChangeActive(newActiveItems => {
             const index = items.indexOf(newActiveItems[0]!)
             onDidChangeActive.call(quickPick, newActiveItems, index)
         })
-    const ignoreBindingCallbacks = new Set(['onDidChangeActive', 'onDidShow'])
+    }
+
+    if (onDidChangeFirstActive) {
+        quickPick.onDidChangeActive(newActiveItems => {
+            const firstItem = newActiveItems[0]
+            if (!firstItem) return
+            const index = items.indexOf(firstItem)
+            onDidChangeFirstActive.call(quickPick, firstItem, index)
+        })
+    }
+
+    const ignoreBindingCallbacks = new Set<string>(['onDidChangeActive', 'onDidShow', 'onDidChangeFirstActive'])
     // bind callbacks
-    // eslint-disable-next-line curly
     for (const [name, callback] of Object.entries(options)) {
         if (name.startsWith('onDid') && !ignoreBindingCallbacks.has(name)) quickPick[name]((callback as any).bind(quickPick))
     }

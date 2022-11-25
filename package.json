@@ -25,7 +25,7 @@
         "@zardoy/tsconfig": "^1.4.0",
         "esbuild": "^0.15.7",
         "eslint": "^8.11.0",
-        "eslint-config-zardoy": "^0.2.10",
+        "eslint-config-zardoy": "^0.2.15",
         "jest": "^29.0.3",
         "jsonc-parser": "^3.2.0",
         "tsc-watch": "^5.0.3",

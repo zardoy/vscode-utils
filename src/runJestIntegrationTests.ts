@@ -1,4 +1,3 @@
-/* eslint-disable curly */
 /* eslint-disable @typescript-eslint/naming-convention */
 import path from 'path'
 import { runCLI } from 'jest'

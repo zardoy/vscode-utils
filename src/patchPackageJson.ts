@@ -50,12 +50,14 @@ export const patchPackageJson = ({
                         delete property.enumDescriptions
                     }
 
-                    if (Array.isArray(property))
+                    if (Array.isArray(property)) {
                         for (const maybeObject of property) {
                             if (typeof maybeObject !== 'object') continue
                             normalizeProps(maybeObject)
                         }
-                    else normalizeProps(property)
+                    } else {
+                        normalizeProps(property)
+                    }
                 }
             }
 
