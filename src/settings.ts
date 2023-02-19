@@ -21,6 +21,15 @@ export const watchExtensionSettings = (keys: SettingKey[], handler: (changedSett
     })
 }
 
+type WatchExtensionSetting = <T extends SettingKey>(keys: T, handler: (newValue: Settings[T]) => any, scope?: vscode.ConfigurationScope) => void
+
+export const watchExtensionSetting: WatchExtensionSetting = (key: SettingKey, handler: (newValue: SettingKey) => any, scope?: vscode.ConfigurationScope) => {
+    vscode.workspace.onDidChangeConfiguration(({ affectsConfiguration }) => {
+        if (!affectsConfiguration(getExtensionSettingId(key), scope)) return
+        handler(getExtensionSetting(key))
+    })
+}
+
 export const conditionallyRegister = (
     settingKey: SettingKey,
     registerFn: () => vscode.Disposable,
