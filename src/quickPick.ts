@@ -30,6 +30,7 @@ export const showQuickPick = async <T, M extends boolean = false>(
             onDidTriggerItemButton?: (this: ThisQuickPick<T>, button: vscode.QuickPickItemButtonEvent<VSCodeQuickPickItem<T>>) => any
             onDidShow?: (this: ThisQuickPick<T>) => any
             initialValue?: string
+            typeNumberSelect?: boolean
             // eslint-disable-next-line @typescript-eslint/ban-types
         } & (M extends true ? { onDidChangeSelection?: (items: ReadonlyArray<VSCodeQuickPickItem<T>>) => any; initialAllSelected?: boolean } : {}) = {},
 ): Promise<(M extends true ? T[] : T) | undefined> => {
@@ -67,6 +68,27 @@ export const showQuickPick = async <T, M extends boolean = false>(
         })
     }
 
+    let quickPickAcceptResolve: (value: any) => void
+
+    if (options.typeNumberSelect) {
+        const updateNumbersInItems = () => {
+            const maxItemLength = quickPick.items.length.toString().length
+            quickPick.items = quickPick.items.map((item, i) => {
+                item.label = `${(i + 1).toString().padStart(maxItemLength, '0')}. ${item.label}`
+                return item
+            })
+        }
+
+        updateNumbersInItems()
+        quickPick.onDidChangeValue(e => {
+            const selectedItemNum = Number.parseInt(e, 10)
+            if (Number.isNaN(selectedItemNum)) return
+            const selectedItem = quickPick.items.find(i => i.label.startsWith(`${selectedItemNum}. `))
+            if (!selectedItem) return
+            quickPickAcceptResolve(selectedItem.value)
+        })
+    }
+
     const ignoreBindingCallbacks = new Set<string>(['onDidChangeActive', 'onDidShow', 'onDidChangeFirstActive'])
     // bind callbacks
     for (const [name, callback] of Object.entries(options)) {
@@ -74,6 +96,7 @@ export const showQuickPick = async <T, M extends boolean = false>(
     }
 
     const selectedValues = await new Promise<(M extends true ? T[] : T) | undefined>(resolve => {
+        quickPickAcceptResolve = resolve
         quickPick.onDidHide(() => {
             resolve(undefined)
             quickPick.dispose()
