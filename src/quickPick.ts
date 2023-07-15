@@ -7,8 +7,8 @@ import { pickObj } from '@zardoy/utils'
 
 type QuickPickCallbackOptions = Pick<vscode.QuickPick<any>, 'onDidChangeValue' | 'onDidTriggerButton'>
 
-type QuickPickMethods = {
-    [K in keyof QuickPickCallbackOptions]?: QuickPickCallbackOptions[K] extends vscode.Event<infer U> ? (this: vscode.QuickPick<any>, event: U) => void : never
+type QuickPickMethods<T> = {
+    [K in keyof QuickPickCallbackOptions]?: QuickPickCallbackOptions[K] extends vscode.Event<infer U> ? (this: ThisQuickPick<T>, event: U) => void : never
 }
 
 export type ThisQuickPick<T> = Omit<vscode.QuickPick<VSCodeQuickPickItem<T>>, 'dispose'> & {
@@ -21,7 +21,7 @@ export type ThisQuickPick<T> = Omit<vscode.QuickPick<VSCodeQuickPickItem<T>>, 'd
 export const showQuickPick = async <T, M extends boolean = false>(
     items: Array<VSCodeQuickPickItem<T>>,
     options: Except<vscode.QuickPickOptions, 'onDidSelectItem'> &
-        QuickPickMethods & {
+        QuickPickMethods<T> & {
             canPickMany?: M
             /** Initially active item (not selected) */
             initialSelectedIndex?: number
@@ -31,6 +31,7 @@ export const showQuickPick = async <T, M extends boolean = false>(
             onDidShow?: (this: ThisQuickPick<T>) => any
             initialValue?: string
             typeNumberSelect?: boolean
+            buttons?: readonly vscode.QuickInputButton[]
             // eslint-disable-next-line @typescript-eslint/ban-types
         } & (M extends true ? { onDidChangeSelection?: (items: ReadonlyArray<VSCodeQuickPickItem<T>>) => any; initialAllSelected?: boolean } : {}) = {},
 ): Promise<(M extends true ? T[] : T) | undefined> => {
@@ -43,6 +44,7 @@ export const showQuickPick = async <T, M extends boolean = false>(
 
     Object.assign(quickPick, pickObj(options, 'ignoreFocusOut', 'matchOnDescription', 'matchOnDetail', 'placeHolder', 'title'))
     quickPick.placeholder = options.placeHolder
+    quickPick.buttons = options.buttons ?? []
     quickPick.canSelectMany = options.canPickMany!
     if (options.initialValue) quickPick.value = options.initialValue
     const { initialSelectedIndex, onDidChangeActive, onDidChangeFirstActive } = options
